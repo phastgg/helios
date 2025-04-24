@@ -23,6 +23,16 @@ dependencies {
 }
 
 publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = this.project.group
+            artifactId = this.project.name
+            version = this.project.version
+
+            from components.java
+        }
+    }
+
     repositories {
         maven {
             name = "undefinedcreationsPhastgg"
