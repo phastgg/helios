@@ -32,5 +32,5 @@ jobs:
       - name: Publish package
         run: ./gradlew publish
         env:
-          USERNAME: ${{ secrets.USERNAME }}
-          TOKEN: ${{ secrets.TOKEN }}
+          MAVEN_NAME: ${{ secrets.MAVEN_NAME }}
+          MAVEN_SECRET: ${{ secrets.MAVEN_SECRET }}

@@ -1,6 +1,7 @@
 plugins {
     java
     `maven-publish`
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.16"
 }
 
 group = "gg.phast"
@@ -19,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.5-R0.1-SNAPSHOT")
 }
 
 publishing {
@@ -52,11 +53,4 @@ java {
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible) options.release = targetJavaVersion
-}
-
-tasks.processResources {
-    val props = mapOf("version" to project.version)
-    inputs.properties(props)
-    filteringCharset = "UTF-8"
-    filesMatching("plugin.yml") { expand(props) }
 }

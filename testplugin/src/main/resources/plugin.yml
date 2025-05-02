@@ -1,0 +1,6 @@
+name: TestPlugin
+version: "1.0-SNAPSHOT"
+main: gg.phast.helios.testplugin.TestPlugin
+description: Test plugin for Helios Util
+author: Phastgg
+website: https://discord.phast.gg
