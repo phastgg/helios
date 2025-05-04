@@ -33,7 +33,7 @@ publishing {
     repositories {
         maven {
             name = "phastgg"
-            url = uri("https://repo.phast.gg/phastgg")
+            url = uri("https://repo.phast.gg/releases")
             credentials(PasswordCredentials::class) {
                 username = System.getenv("MAVEN_NAME") ?: property("mavenUser").toString()
                 password = System.getenv("MAVEN_SECRET") ?: property("mavenPassword").toString()
