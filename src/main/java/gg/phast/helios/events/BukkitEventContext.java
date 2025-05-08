@@ -7,9 +7,9 @@ import org.bukkit.event.Event;
  *
  * @author phastgg
  * @since 1.0-SNAPSHOT
- * @param handler handler which handles event,
+ * @param handler Handler which handles event,
  *                provides methods for manipulation with listener
- * @param event called event
+ * @param event Called event
  * @param <T> specific event
  */
 public record BukkitEventContext<T extends Event>(BukkitEventHandler<T> handler, T event) {
