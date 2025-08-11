@@ -5,7 +5,6 @@ import gg.phast.helios.Helios;
 import gg.phast.helios.scheduling.HeliosTask;
 import gg.phast.helios.scheduling.builders.util.SchedulerUtil;
 import gg.phast.helios.scheduling.eventhandler.TaskEventHandler;
-import gg.phast.helios.scheduling.runnables.ScheduledConsumer;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
@@ -19,10 +18,10 @@ import java.util.function.Consumer;
  * @author phastgg
  * @since 1.0-SNAPSHOT
  */
-public class DelayedTaskBuilder extends TaskBuilder {
+public class DelayedTaskScheduler extends TaskBuilder {
 
     private Integer delay;
-    private ScheduledConsumer scheduledConsumer;
+    private Consumer<HeliosTask> consumer;
 
     /**
      * Sets up delay for scheduled task
@@ -30,7 +29,7 @@ public class DelayedTaskBuilder extends TaskBuilder {
      * @return builder instance
      * @since 1.0-SNAPSHOT
      */
-    public DelayedTaskBuilder delay(int delay) {
+    public DelayedTaskScheduler delay(int delay) {
         Preconditions.checkArgument(delay >= 0, "delay must be greater or equal to 0");
         this.delay = delay;
         return this;
@@ -38,13 +37,13 @@ public class DelayedTaskBuilder extends TaskBuilder {
 
     /**
      * Sets up consumer for scheduled task, which will be called when running this task
-     * @param scheduledConsumer consumer
+     * @param consumer consumer
      * @return builder instance
      * @since 1.0-SNAPSHOT
      */
-    public DelayedTaskBuilder consumer(ScheduledConsumer scheduledConsumer) {
-        Objects.requireNonNull(scheduledConsumer, "scheduledConsumer");
-        this.scheduledConsumer = scheduledConsumer;
+    public DelayedTaskScheduler execute(Consumer<HeliosTask> consumer) {
+        Objects.requireNonNull(consumer, "consumer");
+        this.consumer = consumer;
         return this;
     }
 
@@ -57,11 +56,11 @@ public class DelayedTaskBuilder extends TaskBuilder {
     @Override
     protected @NotNull HeliosTask schedule(boolean async) {
         Objects.requireNonNull(delay, "delay");
-        Objects.requireNonNull(scheduledConsumer, "scheduledConsumer");
+        Objects.requireNonNull(consumer, "consumer");
         TaskEventHandler eventHandler = buildEventHandler();
         BukkitTask bukkitTask = SchedulerUtil.run(
                 Helios.getPlugin(),
-                SchedulerUtil.convertHeliosToBukkitConsumer(scheduledConsumer, eventHandler, false),
+                SchedulerUtil.convertHeliosToBukkitConsumer(consumer, eventHandler, false),
                 delay,
                 -1L,
                 async

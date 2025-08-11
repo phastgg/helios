@@ -1,9 +1,9 @@
 package gg.phast.helios.scheduling;
 
 import gg.phast.helios.Helios;
-import gg.phast.helios.scheduling.builders.DelayedTaskBuilder;
-import gg.phast.helios.scheduling.builders.InstantTaskBuilder;
-import gg.phast.helios.scheduling.builders.RepeatingTaskBuilder;
+import gg.phast.helios.scheduling.builders.DelayedTaskScheduler;
+import gg.phast.helios.scheduling.builders.InstantTaskScheduler;
+import gg.phast.helios.scheduling.builders.RepeatingTaskScheduler;
 import gg.phast.helios.scheduling.eventhandler.TaskEventHandler;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
@@ -17,8 +17,8 @@ import java.util.Objects;
 /**
  * BukkitTask wrapper which is primarily made for being used
  * while scheduling via helios scheduling api, to schedule
- * tasks use either {@link #instantTaskBuilder()}, {@link #delayedTaskBuilder()}
- * or {@link #repeatingTaskBuilder()}
+ * tasks use either {@link #instantTaskScheduler()}, {@link #delayedTaskScheduler()}
+ * or {@link #repeatingTaskScheduler()}
  *  @author phastgg
  *  @since 1.0-SNAPSHOT
  */
@@ -86,33 +86,33 @@ public final class HeliosTask {
     }
 
     /**
-     * Creates new instant task builder (equivalent of {@link org.bukkit.scheduler.BukkitScheduler#runTask(Plugin, Runnable)}),
+     * Creates new instant task scheduler (equivalent of {@link org.bukkit.scheduler.BukkitScheduler#runTask(Plugin, Runnable)}),
      * for creating task with the same properties after scheduling, new instance needs to be made
      * @return new builder instance
      * @since 1.0-SNAPSHOT
      */
-    public static @NotNull InstantTaskBuilder instantTaskBuilder() {
-        return new InstantTaskBuilder();
+    public static @NotNull InstantTaskScheduler instantTaskScheduler() {
+        return new InstantTaskScheduler();
     }
 
     /**
-     * Creates new delayed task builder (equivalent of {@link org.bukkit.scheduler.BukkitScheduler#runTaskLater(Plugin, Runnable, long)},
+     * Creates new delayed task scheduler (equivalent of {@link org.bukkit.scheduler.BukkitScheduler#runTaskLater(Plugin, Runnable, long)},
      * for creating task with the same properties after scheduling, new instance needs to be made
      * @return new builder instance
      * @since 1.0-SNAPSHOT
      */
-    public static @NotNull DelayedTaskBuilder delayedTaskBuilder() {
-        return new DelayedTaskBuilder();
+    public static @NotNull DelayedTaskScheduler delayedTaskScheduler() {
+        return new DelayedTaskScheduler();
     }
 
     /**
-     * Creates new repeating task builder (equivalent of {@link org.bukkit.scheduler.BukkitScheduler#runTaskTimer(Plugin, Runnable, long, long)},
+     * Creates new repeating task scheduler (equivalent of {@link org.bukkit.scheduler.BukkitScheduler#runTaskTimer(Plugin, Runnable, long, long)},
      * for creating task with the same properties after scheduling, new instance needs to be made
      * @return new builder instance
      * @since 1.0-SNAPSHOT
      */
-    public static @NotNull RepeatingTaskBuilder repeatingTaskBuilder() {
-        return new RepeatingTaskBuilder();
+    public static @NotNull RepeatingTaskScheduler repeatingTaskScheduler() {
+        return new RepeatingTaskScheduler();
     }
 
     /**

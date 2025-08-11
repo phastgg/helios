@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * Event handler designed for being used when scheduling task
@@ -18,8 +19,8 @@ import java.util.Objects;
 public final class TaskEventHandler {
 
     private final ScheduledTaskException onException;
-    private final ScheduledConsumer onCancel;
-    private final ScheduledConsumer onFinish;
+    private final Consumer<HeliosTask> onCancel;
+    private final Consumer<HeliosTask> onFinish;
 
     /**
      * Constructor
@@ -29,8 +30,8 @@ public final class TaskEventHandler {
      * @since 1.0-SNAPSHOT
      */
     public TaskEventHandler(@Nullable ScheduledTaskException onException,
-                            @Nullable ScheduledConsumer onCancel,
-                            @Nullable ScheduledConsumer onFinish
+                            @Nullable Consumer<HeliosTask> onCancel,
+                            @Nullable Consumer<HeliosTask> onFinish
     ) {
         this.onException = onException;
         this.onCancel = onCancel;
@@ -55,7 +56,8 @@ public final class TaskEventHandler {
      * @since 1.0-SNAPSHOT
      */
     public void triggerOnCancel(@NotNull HeliosTask heliosTask) {
-        trigger(heliosTask, onCancel);
+        if (onCancel == null) return;
+        onCancel.accept(heliosTask);
     }
 
     /**
@@ -64,18 +66,7 @@ public final class TaskEventHandler {
      * @since 1.0-SNAPSHOT
      */
     public void triggerOnFinish(@NotNull HeliosTask heliosTask) {
-        trigger(heliosTask, onFinish);
-    }
-
-    /**
-     * Internal consumer triggering with few important checks
-     * @param heliosTask bukkit task wrapper
-     * @param scheduledConsumer consumer
-     * @since 1.0-SNAPSHOT
-     */
-    private void trigger(@NotNull HeliosTask heliosTask, @Nullable ScheduledConsumer scheduledConsumer) {
-        Objects.requireNonNull(heliosTask, "heliosTask");
-        if (scheduledConsumer == null) return;
-        scheduledConsumer.accept(heliosTask);
+        if (onFinish == null) return;
+        onFinish.accept(heliosTask);
     }
 }

@@ -1,14 +1,15 @@
 package gg.phast.helios.scheduling.builders;
 
 import gg.phast.helios.scheduling.HeliosTask;
-import gg.phast.helios.scheduling.runnables.ScheduledConsumer;
 import gg.phast.helios.scheduling.runnables.ScheduledTaskException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Consumer;
+
 /**
  * Abstract task builder class, which is being extended
- * by {@link InstantTaskBuilder}, {@link DelayedTaskBuilder} and {@link RepeatingTaskBuilder}
+ * by {@link InstantTaskScheduler}, {@link DelayedTaskScheduler} and {@link RepeatingTaskScheduler}
  *
  * @author phastgg
  * @since 1.0-SNAPSHOT
@@ -43,7 +44,7 @@ public abstract class TaskBuilder extends TaskEventBuilder {
      * @since 1.0-SNAPSHOT
      */
     @Override
-    public TaskBuilder onCancel(final @Nullable ScheduledConsumer onCancel) {
+    public TaskBuilder onCancel(final @Nullable Consumer<HeliosTask> onCancel) {
         super.onCancel(onCancel);
         return this;
     }
@@ -55,7 +56,7 @@ public abstract class TaskBuilder extends TaskEventBuilder {
      * @since 1.0-SNAPSHOT
      */
     @Override
-    public TaskBuilder onFinish(final @Nullable ScheduledConsumer onFinish) {
+    public TaskBuilder onFinish(final @Nullable Consumer<HeliosTask> onFinish) {
         super.onFinish(onFinish);
         return this;
     }

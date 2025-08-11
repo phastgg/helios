@@ -1,9 +1,11 @@
 package gg.phast.helios.scheduling.builders;
 
+import gg.phast.helios.scheduling.HeliosTask;
 import gg.phast.helios.scheduling.eventhandler.TaskEventHandler;
-import gg.phast.helios.scheduling.runnables.ScheduledConsumer;
 import gg.phast.helios.scheduling.runnables.ScheduledTaskException;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Consumer;
 
 /**
  * Event handler builder for building {@link TaskEventHandler},
@@ -15,8 +17,8 @@ import org.jetbrains.annotations.Nullable;
 public class TaskEventBuilder {
 
     private ScheduledTaskException onException;
-    private ScheduledConsumer onCancel;
-    private ScheduledConsumer onFinish;
+    private Consumer<HeliosTask> onCancel;
+    private Consumer<HeliosTask> onFinish;
 
     /**
      * Constructor
@@ -42,7 +44,7 @@ public class TaskEventBuilder {
      * @return builder instance
      * @since 1.0-SNAPSHOT
      */
-    public TaskEventBuilder onCancel(final @Nullable ScheduledConsumer onCancel) {
+    public TaskEventBuilder onCancel(final @Nullable Consumer<HeliosTask> onCancel) {
         this.onCancel = onCancel;
         return this;
     }
@@ -53,7 +55,7 @@ public class TaskEventBuilder {
      * @return builder instance
      * @since 1.0-SNAPSHOT
      */
-    public TaskEventBuilder onFinish(final @Nullable ScheduledConsumer onFinish) {
+    public TaskEventBuilder onFinish(final @Nullable Consumer<HeliosTask> onFinish) {
         this.onFinish = onFinish;
         return this;
     }
