@@ -45,7 +45,7 @@ public class InstantTaskScheduler extends TaskBuilder {
         TaskEventHandler eventHandler = buildEventHandler();
         BukkitTask bukkitTask = SchedulerUtil.run(
                 Helios.getPlugin(),
-                SchedulerUtil.convertHeliosToBukkitConsumer(consumer, eventHandler, true),
+                SchedulerUtil.convertHeliosToBukkitConsumer(consumer, eventHandler, false),
                 0L,
                 -1L,
                 async
