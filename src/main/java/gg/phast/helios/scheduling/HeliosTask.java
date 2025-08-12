@@ -5,6 +5,7 @@ import gg.phast.helios.scheduling.builders.DelayedTaskScheduler;
 import gg.phast.helios.scheduling.builders.InstantTaskScheduler;
 import gg.phast.helios.scheduling.builders.RepeatingTaskScheduler;
 import gg.phast.helios.scheduling.eventhandler.TaskEventHandler;
+import gg.phast.helios.scheduling.eventhandler.TaskEventType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.ApiStatus;
@@ -52,7 +53,7 @@ public final class HeliosTask {
 
         try {
             task.cancel();
-            if (eventHandler != null) eventHandler.triggerOnCancel(this);
+            if (eventHandler != null) eventHandler.triggerEvent(this, TaskEventType.CANCEL, null);
         } catch (IllegalStateException e) {
             // ignored since we do not care if task wasn't scheduled already
         }

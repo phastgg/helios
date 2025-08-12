@@ -1,7 +1,9 @@
 package gg.phast.helios.scheduling.builders.util;
 
+import gg.phast.helios.Helios;
 import gg.phast.helios.scheduling.HeliosTask;
 import gg.phast.helios.scheduling.eventhandler.TaskEventHandler;
+import gg.phast.helios.scheduling.eventhandler.TaskEventType;
 import io.netty.util.internal.UnstableApi;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.scheduler.CraftScheduler;
@@ -51,7 +53,7 @@ public class SchedulerUtil {
      * @param scheduledConsumer helios consumer
      * @param taskEventHandler event handler for firing actions
      * @param isRepeatingTask whether task is repeating, used for task
-     *                        event handler to determine whether fire {@link TaskEventHandler#triggerOnFinish(HeliosTask)}
+     *                        event handler to determine whether fire {@link TaskEventHandler#triggerEvent(HeliosTask, TaskEventType, Object)}
      * @return bukkit consumer
      * @since 1.0-SNAPSHOT
      */
@@ -78,10 +80,11 @@ public class SchedulerUtil {
 
                     // repeating task never ends except exception or cancel
                     if (!isRepeatingTask) {
-                        taskEventHandler.triggerOnFinish(heliosTask);
+                        taskEventHandler.triggerEvent(heliosTask, TaskEventType.FINISH, null);
                     }
-                } catch (Exception e) {
-                    taskEventHandler.triggerOnException(heliosTask, e);
+                } catch (Exception exception) {
+                    Helios.getLogger().severe("Caught exception while executing task!");
+                    taskEventHandler.triggerEvent(heliosTask, TaskEventType.EXCEPTION, exception);
                 }
             }
         };

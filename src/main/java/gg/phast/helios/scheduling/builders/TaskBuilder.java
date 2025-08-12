@@ -1,10 +1,15 @@
 package gg.phast.helios.scheduling.builders;
 
 import gg.phast.helios.scheduling.HeliosTask;
-import gg.phast.helios.scheduling.runnables.ScheduledTaskException;
+import gg.phast.helios.scheduling.eventhandler.TaskEventCallData;
+import gg.phast.helios.scheduling.eventhandler.TaskEventHandler;
+import gg.phast.helios.scheduling.eventhandler.TaskEventType;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -14,8 +19,9 @@ import java.util.function.Consumer;
  * @author phastgg
  * @since 1.0-SNAPSHOT
  */
-public abstract class TaskBuilder extends TaskEventBuilder {
+public abstract class TaskBuilder {
 
+    private final Map<TaskEventType<?>, List<Consumer<? extends TaskEventCallData<?>>>> eventTasks = new HashMap<>();
     private boolean scheduled = false;
 
     /**
@@ -26,39 +32,31 @@ public abstract class TaskBuilder extends TaskEventBuilder {
     }
 
     /**
-     * Overridden from {@link TaskEventBuilder} to return this builder instance instead
-     * @param onException consumer
+     * Listens to specific task event type and runs code whenever the event is triggered
+     * @param eventType event type
+     * @param consumer consumer
      * @return builder instance
-     * @since 1.0-SNAPSHOT
+     * @param <T> generic
      */
-    @Override
-    public TaskBuilder onException(final @Nullable ScheduledTaskException onException) {
-        super.onException(onException);
+    @SuppressWarnings("unchecked")
+    public <T> TaskBuilder onEvent(TaskEventType<T> eventType, Consumer<TaskEventCallData<T>> consumer) {
+        List<Consumer<? extends TaskEventCallData<T>>> list = (List<Consumer<? extends TaskEventCallData<T>>>) (List<?>) eventTasks.getOrDefault(eventType, new ArrayList<>());
+        list.add(consumer);
+        eventTasks.put(eventType, (List<Consumer<? extends TaskEventCallData<?>>>) (List<?>) list);
         return this;
     }
 
     /**
-     * Overridden from {@link TaskEventBuilder} to return this builder instance instead
-     * @param onCancel consumer
-     * @return builder instance
-     * @since 1.0-SNAPSHOT
+     * Creates event handler based on data previously specified
+     * @return task event handler
      */
-    @Override
-    public TaskBuilder onCancel(final @Nullable Consumer<HeliosTask> onCancel) {
-        super.onCancel(onCancel);
-        return this;
-    }
-
-    /**
-     * Overridden from {@link TaskEventBuilder} to return this builder instance instead
-     * @param onFinish consumer
-     * @return builder instance
-     * @since 1.0-SNAPSHOT
-     */
-    @Override
-    public TaskBuilder onFinish(final @Nullable Consumer<HeliosTask> onFinish) {
-        super.onFinish(onFinish);
-        return this;
+    @SuppressWarnings("unchecked")
+    protected TaskEventHandler createEventHandler() {
+        return new TaskEventHandler(
+                (Map<TaskEventType<?>, List<Consumer<TaskEventCallData<?>>>>)
+                (Map<TaskEventType<?>, ?>)
+                eventTasks
+        );
     }
 
     /**

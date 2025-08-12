@@ -57,7 +57,7 @@ public class DelayedTaskScheduler extends TaskBuilder {
     protected @NotNull HeliosTask schedule(boolean async) {
         Objects.requireNonNull(delay, "delay");
         Objects.requireNonNull(consumer, "consumer");
-        TaskEventHandler eventHandler = buildEventHandler();
+        TaskEventHandler eventHandler = createEventHandler();
         BukkitTask bukkitTask = SchedulerUtil.run(
                 Helios.getPlugin(),
                 SchedulerUtil.convertHeliosToBukkitConsumer(consumer, eventHandler, false),

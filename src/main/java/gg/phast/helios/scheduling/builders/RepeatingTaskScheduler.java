@@ -71,7 +71,7 @@ public class RepeatingTaskScheduler extends TaskBuilder {
         Objects.requireNonNull(period, "period");
         Objects.requireNonNull(delay, "delay");
         Objects.requireNonNull(consumer, "consumer");
-        TaskEventHandler eventHandler = buildEventHandler();
+        TaskEventHandler eventHandler = createEventHandler();
         BukkitTask bukkitTask = SchedulerUtil.run(
                 Helios.getPlugin(),
                 SchedulerUtil.convertHeliosToBukkitConsumer(consumer, eventHandler, true),
