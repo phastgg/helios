@@ -39,7 +39,7 @@ public abstract class TaskBuilder {
      * @param <T> generic
      */
     @SuppressWarnings("unchecked")
-    public <T> TaskBuilder onEvent(TaskEventType<T> eventType, Consumer<TaskEventCallData<T>> consumer) {
+    public <T> TaskBuilder onEventContext(TaskEventType<T> eventType, Consumer<TaskEventCallData<T>> consumer) {
         List<Consumer<? extends TaskEventCallData<T>>> list = (List<Consumer<? extends TaskEventCallData<T>>>) (List<?>) eventTasks.getOrDefault(eventType, new ArrayList<>());
         list.add(consumer);
         eventTasks.put(eventType, (List<Consumer<? extends TaskEventCallData<?>>>) (List<?>) list);

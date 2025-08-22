@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Consumer;
 
 /**
- * Task Event Call Data used when {@link gg.phast.helios.scheduling.builders.TaskBuilder#onEvent(TaskEventType, Consumer)}
+ * Task Event Call Data used when {@link gg.phast.helios.scheduling.builders.TaskBuilder#onEventContext(TaskEventType, Consumer)}
  *
  * @author phastgg
  * @since 1.0-SNAPSHOT
