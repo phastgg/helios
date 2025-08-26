@@ -1,132 +1,89 @@
 package gg.phast.helios.scheduling;
 
-import gg.phast.helios.Helios;
-import gg.phast.helios.scheduling.builders.DelayedTaskBuilder;
-import gg.phast.helios.scheduling.builders.InstantTaskBuilder;
-import gg.phast.helios.scheduling.builders.RepeatingTaskBuilder;
+import gg.phast.helios.scheduling.builders.DelayedTaskScheduler;
+import gg.phast.helios.scheduling.builders.InstantTaskScheduler;
+import gg.phast.helios.scheduling.builders.RepeatingTaskScheduler;
 import gg.phast.helios.scheduling.eventhandler.TaskEventHandler;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
+import java.util.UUID;
 
 /**
  * BukkitTask wrapper which is primarily made for being used
  * while scheduling via helios scheduling api, to schedule
- * tasks use either {@link #instantTaskBuilder()}, {@link #delayedTaskBuilder()}
- * or {@link #repeatingTaskBuilder()}
+ * tasks use either {@link #instantTaskScheduler()}, {@link #delayedTaskScheduler()}
+ * or {@link #repeatingTaskScheduler()}
+ *
  *  @author phastgg
  *  @since 1.0-SNAPSHOT
  */
-public final class HeliosTask {
+public abstract class HeliosTask {
 
-    private final BukkitTask task;
-    private final TaskEventHandler eventHandler;
+    protected final TaskEventHandler eventHandler;
+    protected final UUID uuid;
 
     /**
      * Constructor
-     * @param task which task to wrap around
      * @param eventHandler event handler used for triggering cancel
      * @since 1.0-SNAPSHOT
      */
     @ApiStatus.Internal
-    private HeliosTask(@NotNull BukkitTask task, TaskEventHandler eventHandler) {
-        this.task = task;
+    protected HeliosTask(TaskEventHandler eventHandler) {
         this.eventHandler = eventHandler;
+        this.uuid = UUID.randomUUID();
     }
 
     /**
-     * Cancels wrapped bukkit task if it is not already cancelled
-     * and catches exception in case cancelling bukkit task would throw one
+     * Cancels task if the task is still valid
      * @since 1.0-SNAPSHOT
      */
-    public void cancel() {
-        if (isCancelled()) {
-            Helios.getLogger().warning("Tried to cancel task (ID: " + task.getTaskId() + " ) which is already considered cancelled!");
-            return;
-        }
-
-        try {
-            task.cancel();
-            if (eventHandler != null) eventHandler.triggerOnCancel(this);
-        } catch (IllegalStateException e) {
-            // ignored since we do not care if task wasn't scheduled already
-        }
-    }
+    public abstract void cancel();
 
     /**
-     * Whether task is cancelled
-     * @return task is cancelled
+     * Returns whether task is cancelled
+     * @return whether task is cancelled
      * @since 1.0-SNAPSHOT
      */
-    public boolean isCancelled() {
-        return task.isCancelled();
-    }
+    public abstract boolean isCancelled();
 
     /**
-     * Whether task is async
-     * @return task is async
+     * Returns unique id which is generated for every task to differentiate them
+     * @return unique id
      * @since 1.0-SNAPSHOT
      */
-    public boolean isAsync() {
-        return !task.isSync();
+    public UUID getUniqueId() {
+        return uuid;
     }
 
     /**
-     * Id used to identify tasks in bukkit task
-     * @return id of the task
-     * @since 1.0-SNAPSHOT
-     */
-    public int getId() {
-        return task.getTaskId();
-    }
-
-    /**
-     * Creates new instant task builder (equivalent of {@link org.bukkit.scheduler.BukkitScheduler#runTask(Plugin, Runnable)}),
+     * Creates new instant task scheduler (equivalent of {@link org.bukkit.scheduler.BukkitScheduler#runTask(Plugin, Runnable)}),
      * for creating task with the same properties after scheduling, new instance needs to be made
      * @return new builder instance
      * @since 1.0-SNAPSHOT
      */
-    public static @NotNull InstantTaskBuilder instantTaskBuilder() {
-        return new InstantTaskBuilder();
+    public static @NotNull InstantTaskScheduler instantTaskScheduler() {
+        return new InstantTaskScheduler();
     }
 
     /**
-     * Creates new delayed task builder (equivalent of {@link org.bukkit.scheduler.BukkitScheduler#runTaskLater(Plugin, Runnable, long)},
+     * Creates new delayed task scheduler (equivalent of {@link org.bukkit.scheduler.BukkitScheduler#runTaskLater(Plugin, Runnable, long)},
      * for creating task with the same properties after scheduling, new instance needs to be made
      * @return new builder instance
      * @since 1.0-SNAPSHOT
      */
-    public static @NotNull DelayedTaskBuilder delayedTaskBuilder() {
-        return new DelayedTaskBuilder();
+    public static @NotNull DelayedTaskScheduler delayedTaskScheduler() {
+        return new DelayedTaskScheduler();
     }
 
     /**
-     * Creates new repeating task builder (equivalent of {@link org.bukkit.scheduler.BukkitScheduler#runTaskTimer(Plugin, Runnable, long, long)},
+     * Creates new repeating task scheduler (equivalent of {@link org.bukkit.scheduler.BukkitScheduler#runTaskTimer(Plugin, Runnable, long, long)},
      * for creating task with the same properties after scheduling, new instance needs to be made
      * @return new builder instance
      * @since 1.0-SNAPSHOT
      */
-    public static @NotNull RepeatingTaskBuilder repeatingTaskBuilder() {
-        return new RepeatingTaskBuilder();
-    }
-
-    /**
-     * Creates wrapper around bukkit task with event handler used for triggering onCancel,
-     * this method can be used for different use as wrapping around bukkit task without using
-     * helios scheduling api, however should be used carefully as it is not designed for that
-     * @param task bukkit task to wrap around
-     * @param eventHandler event handler used for triggering few events, can be null
-     * @return new wrapper around helios task
-     * @since 1.0-SNAPSHOT
-     */
-    @Contract("_,_ -> new")
-    public static @NotNull HeliosTask of(@NotNull BukkitTask task, @Nullable TaskEventHandler eventHandler) {
-        Objects.requireNonNull(task, "task");
-        return new HeliosTask(task, eventHandler);
+    public static @NotNull RepeatingTaskScheduler repeatingTaskScheduler() {
+        return new RepeatingTaskScheduler();
     }
 }
