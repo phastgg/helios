@@ -24,19 +24,34 @@ public class TaskEventType<T> {
      * Exception type, called only when exception is thrown during execution
      */
     public final static TaskEventType<Exception> EXCEPTION;
+    /**
+     * Another cancel type, called only when using Entity Scheduling and entity is removed before the runnable is called
+     */
+    public final static TaskEventType<Void> RETIRED;
 
     static {
         FINISH = new TaskEventType<>(void.class);
         CANCEL = new TaskEventType<>(void.class);
         EXCEPTION = new TaskEventType<>(Exception.class);
+        RETIRED = new TaskEventType<>(void.class);
     }
 
     private final Class<T> dataClass;
 
+    /**
+     * Constructor
+     * @param dataClass data class
+     * @since 1.0-SNAPSHOT
+     */
     private TaskEventType(final @NotNull Class<T> dataClass) {
         this.dataClass = dataClass;
     }
 
+    /**
+     * Returns data class
+     * @return data class
+     * @since 1.0-SNAPSHOT
+     */
     public Class<T> getDataClass() {
         return dataClass;
     }
