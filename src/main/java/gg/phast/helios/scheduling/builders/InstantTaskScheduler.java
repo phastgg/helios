@@ -16,7 +16,7 @@ import java.util.function.Consumer;
  * @author phastgg
  * @since 1.0-SNAPSHOT
  */
-public class InstantTaskScheduler extends TaskBuilder {
+public class InstantTaskScheduler extends TaskScheduler {
 
     private Consumer<HeliosTask> consumer;
 

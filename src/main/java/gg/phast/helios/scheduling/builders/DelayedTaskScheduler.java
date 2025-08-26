@@ -17,7 +17,7 @@ import java.util.function.Consumer;
  * @author phastgg
  * @since 1.0-SNAPSHOT
  */
-public class DelayedTaskScheduler extends TaskBuilder {
+public class DelayedTaskScheduler extends TaskScheduler {
 
     private Integer delay;
     private Consumer<HeliosTask> consumer;

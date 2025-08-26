@@ -15,13 +15,13 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 /**
- * Abstract task builder class, which is being extended
+ * Abstract task scheduler class, which is being extended
  * by {@link InstantTaskScheduler}, {@link DelayedTaskScheduler} and {@link RepeatingTaskScheduler}
  *
  * @author phastgg
  * @since 1.0-SNAPSHOT
  */
-public abstract class TaskBuilder {
+public abstract class TaskScheduler {
 
     private final Map<TaskEventType<?>, List<Consumer<? extends TaskEventCallData<?>>>> eventTasks = new HashMap<>();
 
@@ -29,7 +29,7 @@ public abstract class TaskBuilder {
      * Constructor
      * @since 1.0-SNAPSHOT
      */
-    public TaskBuilder() {
+    public TaskScheduler() {
     }
 
     /**
@@ -41,7 +41,7 @@ public abstract class TaskBuilder {
      * @since 1.0-SNAPSHOT
      */
     @SuppressWarnings("unchecked")
-    public <T> TaskBuilder onEventContext(TaskEventType<T> eventType, Consumer<TaskEventCallData<T>> consumer) {
+    public <T> TaskScheduler onEventContext(TaskEventType<T> eventType, Consumer<TaskEventCallData<T>> consumer) {
         List<Consumer<? extends TaskEventCallData<T>>> list = (List<Consumer<? extends TaskEventCallData<T>>>) (List<?>) eventTasks.getOrDefault(eventType, new ArrayList<>());
         list.add(consumer);
         eventTasks.put(eventType, (List<Consumer<? extends TaskEventCallData<?>>>) (List<?>) list);

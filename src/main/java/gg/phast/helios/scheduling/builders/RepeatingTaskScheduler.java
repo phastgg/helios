@@ -17,7 +17,7 @@ import java.util.function.Consumer;
  * @author phastgg
  * @since 1.0-SNAPSHOT
  */
-public class RepeatingTaskScheduler extends TaskBuilder {
+public class RepeatingTaskScheduler extends TaskScheduler {
 
     private Long period;
     private Long delay = 0L;
