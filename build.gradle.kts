@@ -2,6 +2,7 @@ plugins {
     java
     `maven-publish`
     id("io.papermc.paperweight.userdev") version "2.0.0-beta.18"
+    kotlin("jvm")
 }
 
 group = "gg.phast"
@@ -20,7 +21,8 @@ repositories {
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.21.5-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.10-R0.1-SNAPSHOT")
+    implementation(kotlin("stdlib-jdk8"))
 }
 
 java {
@@ -50,12 +52,13 @@ publishing {
 val targetJavaVersion = 21
 java {
     val javaVersion = JavaVersion.toVersion(targetJavaVersion)
-    sourceCompatibility = javaVersion
-    targetCompatibility = javaVersion
     if (JavaVersion.current() < javaVersion) toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
 }
 
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible) options.release = targetJavaVersion
+}
+kotlin {
+    jvmToolchain(21)
 }

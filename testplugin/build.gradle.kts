@@ -2,6 +2,7 @@ plugins {
     java
     id("com.gradleup.shadow") version "9.0.1"
     id("xyz.jpenilla.run-paper") version "2.3.1"
+    kotlin("jvm")
 }
 
 group = "gg.phast"
@@ -18,6 +19,7 @@ repositories {
 dependencies {
     implementation(project(":"))
     compileOnly("io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT")
+    implementation(kotlin("stdlib-jdk8"))
 }
 
 tasks {
