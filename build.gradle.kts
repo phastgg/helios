@@ -1,7 +1,7 @@
 plugins {
     java
     `maven-publish`
-    id("io.papermc.paperweight.userdev") version "2.0.0-beta.18"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.19"
     kotlin("jvm")
 }
 
@@ -39,11 +39,11 @@ publishing {
 
     repositories {
         maven {
-            name = "phastgg"
-            url = uri("https://repo.phast.gg/releases")
+            name = "OSSRH"
+            url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
             credentials(PasswordCredentials::class) {
-                username = System.getenv("MAVEN_NAME") ?: property("mavenUser").toString()
-                password = System.getenv("MAVEN_SECRET") ?: property("mavenPassword").toString()
+                username = System.getenv("MAVEN_USERNAME") ?: property("mavenUsername").toString()
+                password = System.getenv("MAVEN_PASSWORD") ?: property("mavenPassword").toString()
             }
         }
     }
