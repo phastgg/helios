@@ -43,7 +43,8 @@ public class HeliosSkinManager {
     }
 
     /**
-     * Changes GameProfile's textures to the ones of specified player
+     * Changes GameProfile's textures to the ones of specified player.
+     * Special Warning: <b>SHOULD be run async</b>
      *
      * @param profile profile
      * @param playerName from which player to fetch textures
@@ -74,7 +75,9 @@ public class HeliosSkinManager {
     }
 
     /**
-     * Requests for textures from Mojang API using {@link MojangService}
+     * Requests for textures from Mojang API using {@link MojangService}.
+     * Special Warning! We highly recommend running it on another thread
+     * to prevent freeze or crash of the server
      *
      * @param playerName player name
      * @return SkinData returned from Mojang API, can be null and should be used with this in mind
